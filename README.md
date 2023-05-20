@@ -1,2 +1,2 @@
 # shooter
-funny game with pizzas and capybara
+смешная игра со стрельбой по пиццам и управлением капибарой
