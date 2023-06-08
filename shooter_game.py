@@ -35,6 +35,19 @@ class Enemy(GameSprite):
             self.rect.y = -50
             lost += 1 
 
+# класс для препятствия (наследник от основного класса)
+class Barrier(GameSprite):
+    # метод для движения препятствия
+    def update(self):
+        self.rect.y += self.speed  # двигаем препятствия вниз
+
+        # если координата Y препятствия вышла за нижнюю границу экрана
+        if self.rect.y > height:
+            # устанавливаем случайную координату по X
+            self.rect.x = randint(80, width - 80)
+            # устанавливаем координату по Y (немного выше верхней границы)
+            self.rect.y = -50
+
 class Bullet(GameSprite):
     def update(self):
         self.rect.y -= self.speed
@@ -47,11 +60,11 @@ height = 500
 window = display.set_mode((width, height))
 display.set_caption('Пуколяколки')
 
-img_back = 'kapibara.jpg'
-img_hero = '1212.jpg'
-img_enemy2 = 'pelmen.png'
-img_enemy1 = 'pizza.png'
-img_bullet = 'mangustin.png'
+img_back = 'pole1.jpg'
+img_hero = 'boy.png'
+img_enemy2 = 'kapla.png'
+img_enemy1 = 'pchela.png'
+img_bullet = 'ball.png'
 
 background = transform.scale(image.load(img_back), (width, height))
 
@@ -80,8 +93,8 @@ num_bullet = 0  # количество пуль
 font.init()
 font1 = font.SysFont("Times New Roman", 36)
 font2 = font.SysFont("Times New Roman", 80)
-win = font2.render("YOU WIN!", True, (255, 255, 255))
-lose = font2.render("YOU LOSE!", True, (180, 0, 0))
+win = font2.render("Ура! Победа", True, (10, 10, 10))
+lose = font2.render("Увы...", True, (100, 10, 50))
 
 clock = time.Clock()
 FPS = 60
@@ -96,7 +109,7 @@ for i in range(4):
 # создание группы астероидов
 asteroids = sprite.Group()
 for i in range(3):
-    asteroid = Enemy(img_enemy2, randint(0, width - 50), -40, randint(1, 7), 50, 50)
+    asteroid = Barrier(img_enemy2, randint(0, width - 50), -40, randint(1, 7), 40, 60)
     asteroids.add(asteroid)
 
 bullets = sprite.Group()
@@ -139,7 +152,7 @@ while game:
         if reload_bullets:
             now_time = timer()
             if now_time - last_time < 3:
-                reload_text = font2.render("Wait, reload...", True, (150, 0, 0))
+                reload_text = font2.render("Перезарядка", True, (100, 10, 50))
                 window.blit(reload_text, (200, 400))
             else:
                 num_bullet = 0
@@ -202,8 +215,8 @@ while game:
             monsters.add(monster)
 
         for i in range(3):
-            asteroid = Enemy(
-                img_enemy2, randint(0, width - 50), -40, randint(1, 7), 50, 50
+            asteroid = Barrier(
+                img_enemy2, randint(0, width - 50), -40, randint(1, 7), 40, 60
             )
             asteroids.add(asteroid)
 
