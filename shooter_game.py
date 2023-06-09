@@ -2,6 +2,7 @@ from pygame import *
 from random import randint
 from time import time as timer
 
+# базовый класс для спрайтов
 class GameSprite(sprite.Sprite):
     def __init__(self, _image, x, y, speed, size_x, size_y):
         super().__init__()
@@ -10,9 +11,13 @@ class GameSprite(sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+    
+    
+    # метод для отрисовки спрайта
     def reset(self):
         window.blit(self.image, (self.rect.x, self.rect.y))
 
+# класс для игрока (наследник от основного класса
 class Player(GameSprite):
     def update(self):
         keys = key.get_pressed()
@@ -26,6 +31,7 @@ class Player(GameSprite):
         bullet = Bullet(img_bullet, self.rect.centerx, self.rect.top, 11, 15, 20)
         bullets.add(bullet)
 
+# класс для врага (наследник от основного класса)
 class Enemy(GameSprite):
     def update(self):
         global lost
@@ -48,6 +54,7 @@ class Barrier(GameSprite):
             # устанавливаем координату по Y (немного выше верхней границы)
             self.rect.y = -50
 
+# класс для пуль
 class Bullet(GameSprite):
     def update(self):
         self.rect.y -= self.speed
@@ -60,6 +67,7 @@ height = 500
 window = display.set_mode((width, height))
 display.set_caption('Пуколяколки')
 
+# названия файлов
 img_back = 'pole1.jpg'
 img_hero = 'boy.png'
 img_enemy2 = 'kapla.png'
@@ -114,6 +122,8 @@ for i in range(3):
 
 bullets = sprite.Group()
 
+
+# пока игровой цикл (как программы) работает
 while game:
     # обработка нажатия кнопки Закрыть окно
     for e in event.get():
@@ -157,7 +167,8 @@ while game:
             else:
                 num_bullet = 0
                 reload_bullets = False
-
+       
+        # если игрок коснулся врага или препятствие
         if sprite.spritecollide(ship, monsters, False) or sprite.spritecollide(
             ship, asteroids, False
         ):
@@ -193,6 +204,7 @@ while game:
 
         life_text = font2.render(str(life), True, life_color)
         window.blit(life_text, (650, 10))
+    # перезапуск игры
     else:
         finish = False
         score = 0
